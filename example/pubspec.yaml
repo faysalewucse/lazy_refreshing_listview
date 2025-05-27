@@ -1,0 +1,27 @@
+name: smart_listview_example
+description: A minimal example for the smart_listview package.
+
+publish_to: 'none' # Not intended for publishing
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # Local path to the smart_listview package
+  smart_listview:
+    path: ../
+  http: ^1.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
