@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:smart_listview/lazy_refreshing_listview.dart';
+import 'package:lazy_refreshing_listview/lazy_refreshing_listview.dart';
 
 void main() => runApp(const MyApp());
 

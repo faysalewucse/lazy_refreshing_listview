@@ -11,12 +11,14 @@ class LazyRefreshingListView extends StatefulWidget {
   final Future<void> Function()? onLazyLoad;
   final Widget? header;
   final Widget? footer;
+  final double lazyLoadTriggerRatio;
 
   const LazyRefreshingListView({
     super.key,
     this.disableRefresh = false,
     this.disableLazyLoading = false,
     this.listSize = 10,
+    this.lazyLoadTriggerRatio = 0.3,
     this.scrollController,
     required this.listView,
     this.onRefresh,
@@ -45,7 +47,10 @@ class _LazyRefreshingListViewState extends State<LazyRefreshingListView> {
   }
 
   void _handleLazyLoading() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+    final position = _scrollController.position;
+    final threshold = position.viewportDimension * widget.lazyLoadTriggerRatio;
+
+    if (position.pixels >= position.maxScrollExtent - threshold) {
       widget.onLazyLoad?.call().then((_) {
         _refreshController.loadComplete();
       });

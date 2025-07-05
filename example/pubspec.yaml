@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
 
-  # Local path to the smart_listview package
-  smart_listview:
+  # Local path to the lazy_refreshing_listview package
+  lazy_refreshing_listview:
     path: ../
   http: ^1.4.0
 
