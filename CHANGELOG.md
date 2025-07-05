@@ -1,3 +1,14 @@
+## 0.0.4
+
+* Update `README.md`.
+* Add comments to codebase
+* Remove unused properties
+* Update Future function to VoidCallback
+
+## 0.0.3
+
+* add dynamic threshold for maintain lazy loading screen height dynamically
+
 ## 0.0.2
 
 * Update `README.md`.
