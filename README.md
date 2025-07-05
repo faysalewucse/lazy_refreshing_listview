@@ -1,29 +1,44 @@
+Sure, Faysal! Here's your **updated and polished `README.md`** that reflects the latest changes to your package — notably:
+
+* `onRefresh` and `onLazyLoad` are now `VoidCallback` (i.e., **sync**),
+* Scroll trigger is controlled by `lazyLoadTriggerRatio`,
+* Fixed descriptions to match current implementation,
+* Clean formatting with emojis and clear sections.
+
+---
+
+````md
 # lazy_refreshing_listview
 
 A smart and reusable Flutter widget that enables pull-to-refresh and infinite scroll (lazy loading) for any `ListView` with minimal setup.
 
-## Features
+---
+
+## ✨ Features
 
 - 🔄 Pull-to-refresh functionality
 - ⬇️ Infinite scrolling (lazy loading)
-- 🔌 Works with any `ListView` widget
-- 📱 Custom scroll controller support
-- ⚙️ Easy-to-use callbacks
+- 🧱 Works with any `ListView` widget
+- 🎯 Trigger lazy load based on scroll threshold
+- ⚙️ Easy-to-use sync `VoidCallback`-based handlers
+- 📱 Supports custom `ScrollController`
 - 🎨 Customizable refresh header and loading footer
 
-## Usage
+---
+
+## 🚀 Quick Usage
 
 ```dart
 import 'package:lazy_refreshing_listview/lazy_refreshing_listview.dart';
 
 LazyRefreshingListView(
-  onRefresh: () async {
-    // Handle refresh logic
-    await _refreshData();
+  onRefresh: () {
+    // Sync logic to handle refresh
+    _refreshData();
   },
-  onLazyLoad: () async {
-    // Handle load more logic
-    await _loadMoreData();
+  onLazyLoad: () {
+    // Sync logic to handle load more
+    _loadMoreData();
   },
   listView: ListView.builder(
     itemCount: items.length,
@@ -34,27 +49,32 @@ LazyRefreshingListView(
       );
     },
   ),
-)
-```
+);
+````
 
-## API Reference
+---
 
-### LazyRefreshingListView
+## 📚 API Reference
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `listView` | `ListView` | **required** | The ListView widget to wrap |
-| `onRefresh` | `Future<void> Function()?` | `null` | Callback when user pulls to refresh |
-| `onLazyLoad` | `Future<void> Function()?` | `null` | Callback when scrolled to bottom |
-| `scrollController` | `ScrollController?` | `null` | Optional scroll controller |
-| `disableRefresh` | `bool` | `false` | Disable pull-to-refresh functionality |
-| `disableLazyLoading` | `bool` | `false` | Disable infinite scroll functionality |
-| `header` | `Widget?` | `null` | Custom refresh indicator widget |
-| `footer` | `Widget?` | `null` | Custom loading indicator widget |
+### `LazyRefreshingListView`
 
-## Advanced Usage
+| Property               | Type                | Default      | Description                                                  |
+|------------------------|---------------------|--------------|--------------------------------------------------------------|
+| `listView`             | `ListView`          | **Required** | The list to be displayed and managed                         |
+| `onRefresh`            | `VoidCallback?`     | `null`       | Called on pull-to-refresh                                    |
+| `onLazyLoad`           | `VoidCallback?`     | `null`       | Called when nearing scroll end                               |
+| `disableRefresh`       | `bool`              | `false`      | Disable pull-to-refresh feature                              |
+| `disableLazyLoading`   | `bool`              | `false`      | Disable infinite scroll                                      |
+| `lazyLoadTriggerRatio` | `double`            | `0.3`        | Ratio of screen height before bottom to trigger lazy loading |
+| `scrollController`     | `ScrollController?` | `null`       | Custom scroll controller                                     |
+| `header`               | `Widget?`           | `null`       | Custom refresh header                                        |
+| `footer`               | `Widget?`           | `null`       | Custom loading footer                                        |
 
-### Custom Refresh Header
+---
+
+## 🧩 Advanced Examples
+
+### 🪄 Custom Refresh Header
 
 ```dart
 LazyRefreshingListView(
@@ -73,7 +93,7 @@ LazyRefreshingListView(
 )
 ```
 
-### Custom Loading Footer
+### 🌀 Custom Loading Footer
 
 ```dart
 LazyRefreshingListView(
@@ -94,7 +114,9 @@ LazyRefreshingListView(
 )
 ```
 
-### Disable Specific Features
+---
+
+## 🧯 Disable Specific Features
 
 ```dart
 // Only enable pull-to-refresh
@@ -102,28 +124,44 @@ LazyRefreshingListView(
   disableLazyLoading: true,
   onRefresh: _onRefresh,
   listView: yourListView,
-)
+);
 
 // Only enable lazy loading
 LazyRefreshingListView(
   disableRefresh: true,
   onLazyLoad: _onLazyLoad,
   listView: yourListView,
-)
+);
 ```
 
-## Tips
+---
 
-- The widget automatically handles scroll detection for lazy loading
-- Pull-to-refresh works with both iOS and Android native feel
-- Compatible with `ListView.builder`, `ListView.separated`, and custom ListViews
-- Use `disableRefresh` or `disableLazyLoading` to control specific features
-- The `onLazyLoad` callback is triggered when the user scrolls to within 200 pixels of the bottom
+## 💡 Tips
 
-## Contributing
+* Scroll detection is handled internally; just provide `onLazyLoad`.
+* Pull-to-refresh uses native-feeling indicators on both Android and iOS.
+* Compatible with `ListView.builder`, `ListView.separated`, etc.
+* You can control how early lazy loading starts with `lazyLoadTriggerRatio` (default: 0.3 of the screen height).
+* The widget supports both internal and external `ScrollController`.
 
-Contributions are welcome! Please read our contributing guidelines and submit pull requests to our [GitHub repository](https://github.com/yourusername/lazy_refreshing_listview).
+---
 
-## Issues and Feedback
+## 🛠 Contributing
 
-Please file issues and feature requests on our [GitHub Issues page](https://github.com/yourusername/lazy_refreshing_listview/issues).
+Contributions are welcome! If you have ideas, bug fixes, or improvements, feel free to fork the repo and submit a PR.
+
+👉 GitHub: [https://github.com/faysalewucse/lazy\_refreshing\_listview](https://github.com/faysalewucse/lazy_refreshing_listview)
+
+---
+
+## 🐞 Issues & Feedback
+
+Please report bugs or feature requests via the GitHub issues page:
+
+[https://github.com/faysalewucse/lazy\_refreshing\_listview/issues](https://github.com/faysalewucse/lazy_refreshing_listview/issues)
+
+---
+
+## 📄 License
+
+MIT © 2025 [Faysal Ahmed](https://github.com/faysalewucse)

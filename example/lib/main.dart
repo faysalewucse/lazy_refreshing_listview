@@ -41,11 +41,10 @@ class _LazyPullListviewExampleState extends State<LazyPullListviewExample> {
     }
 
     final start = _page * _limit;
-    final response = await http.get(
-      Uri.parse(
-        'https://jsonplaceholder.typicode.com/posts?_start=$start&_limit=$_limit',
-      ),
-    );
+    final url =
+        'http://jsonplaceholder.typicode.com/posts?_start=$start&_limit=$_limit';
+
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final List<dynamic> newItems = json.decode(response.body);
@@ -72,22 +71,30 @@ class _LazyPullListviewExampleState extends State<LazyPullListviewExample> {
 
   String limitWords(String text, int wordLimit) {
     final words = text.split(' ');
-    String shortened = words.length <= wordLimit
-        ? text
-        : '${words.take(wordLimit).join(' ')}...';
+    String shortened =
+        words.length <= wordLimit
+            ? text
+            : '${words.take(wordLimit).join(' ')}...';
 
     return shortened.isNotEmpty
         ? '${shortened[0].toUpperCase()}${shortened.substring(1)}'
         : shortened;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lazy Pull ListView Example'), backgroundColor: Colors.grey[200],),
+      appBar: AppBar(
+        title: const Text('Lazy Pull ListView Example'),
+        backgroundColor: Colors.grey[200],
+      ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 40.0),
+        padding: const EdgeInsets.only(
+          left: 10.0,
+          right: 10.0,
+          top: 10.0,
+          bottom: 40.0,
+        ),
         child: LazyRefreshingListView(
           onRefresh: _onRefresh,
           onLazyLoad: _onLazyLoad,
@@ -102,7 +109,7 @@ class _LazyPullListviewExampleState extends State<LazyPullListviewExample> {
                   limitWords(item['title'], 5),
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(limitWords(item['body'], 10)),
+                subtitle: Text(limitWords(item["body"], 10))
               );
             },
           ),
