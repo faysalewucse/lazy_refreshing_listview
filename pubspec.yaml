@@ -1,6 +1,6 @@
 name: lazy_refreshing_listview
 description: "A flutter package to handle listview with refresh, and lazy scrolling smartly"
-version: 0.0.5
+version: 1.0.0
 homepage: https://github.com/faysalewucse/lazy_refreshing_listview
 
 environment:
