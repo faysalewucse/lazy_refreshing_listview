@@ -1,118 +1,95 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:lazy_refreshing_listview/lazy_refreshing_listview.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
+/// The main application widget.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'SmartListview Demo',
-      home: LazyPullListviewExample(),
+    return MaterialApp(
+      title: 'LazyRefreshingListView Demo',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const MyHomePage(),
     );
   }
 }
 
-class LazyPullListviewExample extends StatefulWidget {
-  const LazyPullListviewExample({super.key});
+/// The home page widget that demonstrates the usage of LazyRefreshingListView.
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
-  State<LazyPullListviewExample> createState() =>
-      _LazyPullListviewExampleState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _LazyPullListviewExampleState extends State<LazyPullListviewExample> {
-  final List<dynamic> items = [];
-  int _page = 0;
-  final int _limit = 10;
-  bool _hasMore = true;
+class _MyHomePageState extends State<MyHomePage> {
+  // Sample list of items to display
+  List<String> _items = List.generate(20, (index) => 'Item ${index + 1}');
+  int _page = 1; // Track the current page for loading more items
 
-  Future<void> _fetchData({bool isRefresh = false}) async {
-    if (isRefresh) {
-      _page = 0;
-      _hasMore = true;
-    } else if (!_hasMore) {
-      return;
-    }
-
-    final start = _page * _limit;
-    final url =
-        'http://jsonplaceholder.typicode.com/posts?_start=$start&_limit=$_limit';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> newItems = json.decode(response.body);
-      setState(() {
-        if (isRefresh) {
-          items.clear();
-        }
-        items.addAll(newItems);
-        _hasMore = newItems.length == _limit;
-        _page++;
-      });
-    }
+  /// Simulates a refresh operation by resetting the list.
+  Future<void> _onRefresh() async {
+    await Future.delayed(const Duration(seconds: 2)); // Simulate network delay
+    setState(() {
+      _page = 1;
+      _items = List.generate(20, (index) => 'Item ${index + 1}');
+    });
   }
 
-  Future<void> _onRefresh() async => _fetchData(isRefresh: true);
-
-  Future<void> _onLazyLoad() async => _fetchData();
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData(); // initial load
-  }
-
-  String limitWords(String text, int wordLimit) {
-    final words = text.split(' ');
-    String shortened =
-        words.length <= wordLimit
-            ? text
-            : '${words.take(wordLimit).join(' ')}...';
-
-    return shortened.isNotEmpty
-        ? '${shortened[0].toUpperCase()}${shortened.substring(1)}'
-        : shortened;
+  /// Simulates loading more items. Returns false if no more data is available.
+  Future<bool> _onLoading() async {
+    await Future.delayed(const Duration(seconds: 2)); // Simulate network delay
+    setState(() {
+      _page++;
+      if (_page <= 3) {
+        // Add more items until page 3
+        _items.addAll(
+          List.generate(20, (index) => 'Item ${_items.length + index + 1}'),
+        );
+      }
+    });
+    return _page <= 3; // Return false when no more data is available
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Lazy Pull ListView Example'),
-        backgroundColor: Colors.grey[200],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          left: 10.0,
-          right: 10.0,
-          top: 10.0,
-          bottom: 40.0,
+      appBar: AppBar(title: const Text('LazyRefreshingListView Demo')),
+      body: LazyRefreshingListView(
+        // Enable both pull-to-refresh and infinite loading
+        enablePullDown: true,
+        enablePullUp: true,
+        // Provide refresh and loading callbacks
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        // Customize the "no more data" text and style
+        noMoreDataText: 'No more items to load',
+        noMoreDataTextStyle: const TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
         ),
-        child: LazyRefreshingListView(
-          onRefresh: _onRefresh,
-          onLazyLoad: _onLazyLoad,
-          listView: ListView.separated(
-            itemCount: items.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10.0),
-            itemBuilder: (_, index) {
-              final item = items[index];
-              return ListTile(
-                tileColor: Colors.grey[200],
-                title: Text(
-                  limitWords(item['title'], 5),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(limitWords(item["body"], 10))
-              );
-            },
-          ),
+        // Use a custom loader widget
+        loader: const CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+        ),
+        // Set the footer height
+        footerHeight: 60,
+        // The main content of the list
+        child: ListView.builder(
+          itemCount: _items.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(_items[index]),
+              subtitle: Text('Subtitle for ${_items[index]}'),
+              leading: CircleAvatar(child: Text('${index + 1}')),
+            );
+          },
         ),
       ),
     );
