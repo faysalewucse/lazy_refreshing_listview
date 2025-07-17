@@ -1,3 +1,8 @@
+## 1.0.0
+
+* Update Read me.
+* Add major changes
+
 ## 0.0.5
 
 * Update implementation.
